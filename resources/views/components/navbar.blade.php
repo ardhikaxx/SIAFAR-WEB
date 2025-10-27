@@ -31,17 +31,16 @@
         <!-- Brand Logo -->
         @if (Auth::user()->role == 'admin')
             <a href={{ route('admin.index') }} class="brand-link">
-                <img src="{{asset('assets/dist/img/S Logo.webp')}}" alt="S Logo" class="brand-image img-circle elevation-3"
-                    style="opacity: 0.8" />
-                <span class="brand-text font-weight-light">Apotek Cendana</span>
+                <img src="{{ asset('assets/dist/img/S Logo.webp') }}" alt="S Logo"
+                    class="brand-image img-circle elevation-3" style="opacity: 0.8" />
+                <span class="brand-text font-weight-light">SIAFAR</span>
             </a>
         @else
             <a href={{ route('apoteker.index') }} class="brand-link">
-                <img src="{{asset('assets/dist/img/S Logo.webp')}}" alt="S Logo" class="brand-image img-circle elevation-3"
-                    style="opacity: 0.8" />
-                <span class="brand-text font-weight-light">Apotek Cendana</span>
+                <img src="{{ asset('assets/dist/img/S Logo.webp') }}" alt="S Logo"
+                    class="brand-image img-circle elevation-3" style="opacity: 0.8" />
+                <span class="brand-text font-weight-light">SIAFAR</span>
             </a>
-
         @endif
 
         <!-- Sidebar -->
@@ -49,13 +48,13 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    @if(Auth::user()->image)
+                    @if (Auth::user()->image)
                         <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="{{ Auth::user()->name }}"
                             class="rounded-circle" style="width:30px;height:30px">
                     @endif
                 </div>
                 <div class="info">
-                    <a href="{{ Auth::user()->role == "admin" ? route('admin.profiles.edit', Auth::id()) : route('apoteker.profiles.edit', Auth::id()) }}"
+                    <a href="{{ Auth::user()->role == 'admin' ? route('admin.profiles.edit', Auth::id()) : route('apoteker.profiles.edit', Auth::id()) }}"
                         class="d-block">{{ Auth::user()->name }}</a>
                 </div>
             </div>
@@ -82,14 +81,14 @@
 
                     @if (Auth::user()->role == 'admin')
                         <li class="nav-item">
-                            <a href='{{route('admin.index')}}' class="nav-link">
+                            <a href='{{ route('admin.index') }}' class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
                     @else
                         <li class="nav-item">
-                            <a href='{{route('apoteker.index')}}' class="nav-link">
+                            <a href='{{ route('apoteker.index') }}' class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>Dashboard</p>
                             </a>
@@ -107,52 +106,52 @@
                         </a>
                         <ul class="nav nav-treeview">
 
-                            @if(Auth::user()->role == 'admin')
+                            @if (Auth::user()->role == 'admin')
                                 <li class="nav-item">
-                                    <a href='{{route('admin.medicines.index')}}' class="nav-link">
+                                    <a href='{{ route('admin.medicines.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Data Obat</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href='{{route('admin.categories.index')}}' class="nav-link">
+                                    <a href='{{ route('admin.categories.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Data Kategori</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href='{{route('admin.units.index')}}' class="nav-link">
+                                    <a href='{{ route('admin.units.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Data Satuan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href='{{route('admin.payments.index')}}' class="nav-link">
+                                    <a href='{{ route('admin.payments.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Data Payment</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href='{{route('admin.suppliers.index')}}' class="nav-link">
+                                    <a href='{{ route('admin.suppliers.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Data Supplier</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href='{{route('admin.shippings.index')}}' class="nav-link">
+                                    <a href='{{ route('admin.shippings.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Data Pengiriman</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href='{{route('admin.users.index')}}' class="nav-link">
+                                    <a href='{{ route('admin.users.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Data User</p>
                                     </a>
                                 </li>
                             @else
                                 <li class="nav-item">
-                                    <a href='{{route('apoteker.medicines.index')}}' class="nav-link">
+                                    <a href='{{ route('apoteker.medicines.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Data Obat</p>
                                     </a>
@@ -171,13 +170,13 @@
                         @if (Auth::user()->role == 'admin')
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href='{{route('admin.transactionIns.index')}}' class="nav-link">
+                                    <a href='{{ route('admin.transactionIns.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Transaksi Masuk</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href='{{route('admin.transactionOuts.index')}}' class="nav-link">
+                                    <a href='{{ route('admin.transactionOuts.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Transaksi Keluar</p>
                                     </a>
@@ -186,13 +185,13 @@
                         @else
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href='{{route('apoteker.transactionIns.index')}}' class="nav-link">
+                                    <a href='{{ route('apoteker.transactionIns.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Transaksi Masuk</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href='{{route('apoteker.transactionOuts.index')}}' class="nav-link">
+                                    <a href='{{ route('apoteker.transactionOuts.index') }}' class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Transaksi Keluar</p>
                                     </a>
@@ -203,45 +202,44 @@
 
                     @if (Auth::user()->role == 'admin')
                         <li class="nav-item">
-                            <a href='{{route('admin.token.index')}}' class="nav-link">
+                            <a href='{{ route('admin.token.index') }}' class="nav-link">
                                 <i class="nav-icon fas fa-plus-square"></i>
                                 <p>Token Whatsapp</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href='{{route('admin.feedbacks.index')}}' class="nav-link">
+                            <a href='{{ route('admin.feedbacks.index') }}' class="nav-link">
                                 <i class="nav-icon fas fa-plus-square"></i>
                                 <p>Feedback & Rating</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href='{{route('admin.discounts.index')}}' class="nav-link">
+                            <a href='{{ route('admin.discounts.index') }}' class="nav-link">
                                 <i class="nav-icon fas fa-plus-square"></i>
                                 <p>Diskon</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href='{{route('admin.reports.index')}}' class="nav-link">
+                            <a href='{{ route('admin.reports.index') }}' class="nav-link">
                                 <i class="nav-icon fas fas fa-copy"></i>
                                 <p>Laporan</p>
                             </a>
                         </li>
-
                     @elseif (Auth::user()->role == 'apoteker')
                         <li class="nav-item">
-                            <a href='{{route('apoteker.feedbacks.index')}}' class="nav-link">
+                            <a href='{{ route('apoteker.feedbacks.index') }}' class="nav-link">
                                 <i class="nav-icon fas fa-plus-square"></i>
                                 <p>Feedback & Rating</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href='{{route('apoteker.discounts.index')}}' class="nav-link">
+                            <a href='{{ route('apoteker.discounts.index') }}' class="nav-link">
                                 <i class="nav-icon fas fa-plus-square"></i>
                                 <p>Diskon</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href='{{route('apoteker.reports.index')}}' class="nav-link">
+                            <a href='{{ route('apoteker.reports.index') }}' class="nav-link">
                                 <i class="nav-icon fas fas fa-copy"></i>
                                 <p>Laporan</p>
                             </a>
@@ -260,11 +258,11 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const logoutForm = document.getElementById("logoutForm")
         const logoutButton = document.getElementById("logoutButton")
 
-        logoutButton.addEventListener("click", function () {
+        logoutButton.addEventListener("click", function() {
             if (confirm("Apakah anda yakin ingin logout?")) {
                 logoutForm.submit()
             } else {

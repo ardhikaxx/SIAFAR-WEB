@@ -17,7 +17,7 @@ class UserDefaultSeeder extends Seeder
         User::create([
             'name' => 'Administrator',
             'email' => 'admin@admin.com',
-            'password' => hash::make('admin12345'),
+            'password' => hash::make('password'),
             'role' => 'admin',
             'created_at' => now(),
             'updated_at' => now(),

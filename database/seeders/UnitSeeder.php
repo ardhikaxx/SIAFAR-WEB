@@ -13,6 +13,26 @@ class UnitSeeder extends Seeder
      */
     public function run(): void
     {
-        Unit::factory(10)->create();
+        $units = [
+            ['name' => 'Tablet'],
+            ['name' => 'Kapsul'],
+            ['name' => 'Sirup'],
+            ['name' => 'Salep'],
+            ['name' => 'Krim'],
+            ['name' => 'Injeksi'],
+            ['name' => 'Drop'],
+            ['name' => 'Spray'],
+            ['name' => 'Suppositoria'],
+            ['name' => 'Pil'],
+            ['name' => 'Botol'],
+            ['name' => 'Tube'],
+            ['name' => 'Sachet'],
+            ['name' => 'Ampul'],
+            ['name' => 'Vial'],
+        ];
+
+        foreach ($units as $unit) {
+            Unit::create($unit);
+        }
     }
 }

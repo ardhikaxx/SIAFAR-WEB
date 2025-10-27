@@ -1,43 +1,57 @@
-<div class="w-full flex justify-center flex-col">
-    <h1 class="font-bold text-center p-4 text-4xl">Feedback & Rating</h1>
-    <div class="carousel rounded-box  m-12">
-        @foreach ($ratings as $rating)
-            <div class="carousel-item w-full lg:w-2/6">
-                <div class="card w-96 bg-base-100 ">
-                    <div class="card-body">
-                        <div class="flex justify-between items-center gap-3">
-                            <div class="avatar flex gap-3">
-                                <div class="w-8 rounded-full">
+<section class="px-6 lg:px-12 w-full py-20 flex flex-col items-center bg-gradient-to-br from-pink-50 to-gray-50">
+    <h1 class="font-extrabold text-4xl text-gray-900 text-center mb-10">Feedback & Rating</h1>
+
+    @if ($ratings->isEmpty())
+        {{-- Jika belum ada rating --}}
+        <div class="flex flex-col justify-center items-center text-center py-16 text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor" class="w-20 h-20 text-gray-400 mb-4">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 20.25c4.97 0 9-4.03 9-9s-4.03-9-9-9-9 4.03-9 9 4.03 9 9 9zm0 0v-3m0 0a3 3 0 003-3h-6a3 3 0 003 3z" />
+            </svg>
+            <h2 class="text-2xl font-semibold text-gray-800">Belum Ada Ulasan</h2>
+            <p class="text-gray-500 mt-2 text-lg">Belum ada pengguna yang memberikan rating atau komentar.</p>
+        </div>
+    @else
+        {{-- Carousel feedback --}}
+        <div class="flex gap-6 p-4 w-full overflow-x-auto scrollbar-hide">
+            @foreach ($ratings as $rating)
+                <div
+                    class="flex-shrink-0 bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-100 w-80 transition-transform transform hover:-translate-y-2">
+                    <div class="p-5 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full overflow-hidden border border-gray-200">
                                     @if ($rating->user->image)
                                         <img src="{{ asset('storage/' . $rating->user->image) }}"
-                                            alt="{{ $rating->user->name }}" />
+                                            alt="{{ $rating->user->name }}" class="object-cover w-full h-full" />
                                     @else
-                                        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            fill="currentColor" class="size-6">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                            viewBox="0 0 24 24" class="w-10 h-10 text-gray-400">
                                             <path fill-rule="evenodd"
-                                                d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                                                d="M18.685 19.097A9.723 9.723 0 0021.75 12a9.75 9.75 0 10-19.5 0 9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653ZM12 15a7.486 7.486 0 00-5.855 2.812A8.224 8.224 0 0012 20.25a8.224 8.224 0 005.855-2.438A7.486 7.486 0 0012 15Zm3.75-6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0Z"
                                                 clip-rule="evenodd" />
                                         </svg>
                                     @endif
                                 </div>
-                                <h2 class="card-title">{{ $rating->user->name }}</h2>
-                            </div>
-                            <div class="flex flex-col gap-2 justify-end items-end">
                                 <div>
-                                    <p>{{ $rating->created_at->diffForHumans() }}</p>
+                                    <h2 class="text-lg font-bold text-gray-900">{{ $rating->user->name }}</h2>
+                                    <p class="text-sm text-gray-500">{{ $rating->created_at->diffForHumans() }}</p>
                                 </div>
-                                <div class="flex gap-1">
-
-                                    @for ($i = 0; $i < $rating->rating; $i++)
-                                        <p>⭐</p>
-                                    @endfor
-                                </div>
+                            </div>
+                            <div class="flex gap-1">
+                                @for ($i = 0; $i < $rating->rating; $i++)
+                                    <span class="text-yellow-400 text-lg">★</span>
+                                @endfor
                             </div>
                         </div>
-                        <p>{{ $rating->comment }}</p>
+
+                        <p class="text-gray-700 leading-relaxed">
+                            {{ $rating->comment }}
+                        </p>
                     </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
-</div>
+            @endforeach
+        </div>
+    @endif
+</section>

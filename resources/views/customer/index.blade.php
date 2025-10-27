@@ -2,7 +2,7 @@
 
 @section('content-customer')
 
-<div class="flex flex-wrap gap-4 bg-neutral-100 overflow-x-hidden">
+<div class="flex flex-wrap bg-neutral-100 overflow-x-hidden gap-0">
     <x-hero />
     <div class="flex flex-col">
         <x-discount-medicines />
