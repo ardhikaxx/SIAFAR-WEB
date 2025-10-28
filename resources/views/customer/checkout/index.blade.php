@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content-customer')
-    <div
-        class="container mx-auto p-4 w-full min-h-screen flex flex-col justify-center items-center bg-neutral-100 text-neutral-950">
-        <h1 class="text-3xl font-bold m-10">Checkout</h1>
+    <div class="container mx-auto p-4 w-full min-h-screen flex flex-col justify-center items-center bg-neutral-100 text-neutral-950">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-extrabold text-gray-900 mb-4">Checkout</h1>
+            <p class="text-lg text-gray-600">Lengkapi informasi pengiriman dan pembayaran</p>
+        </div>
         <section class="w-full min-h-screen flex justify-center items-start gap-3">
             <div class=" card bg-neutral-950 text-neutral-200 w-7/12 shadow-xl">
                 <div class="card-body">
@@ -27,50 +29,56 @@
                             @forelse ($carts as $cart)
                                 @if ($cart->medicine)
                                     <div
-                                        class="rounded-xl bg-yellow-500 text-neutral-950 outline-neutral-100 outline-dashed p-2 flex items-center justify-between">
-                                        <div class="flex gap-3 items-center">
-                                            <img class="rounded-full w-10 h-10"
-                                                src="{{ asset('storage/' . ($cart->medicine->photo ?? 'default.jpg')) }}"
-                                                alt="{{ $cart->medicine->name ?? 'Product' }}" />
-                                            <div>
-                                                <h2 class="font-bold">{{ $cart->medicine->name ?? 'Product Deleted' }}</h2>
-                                                <p class="text-sm">x{{ $cart->quantity }}</p>
+                                        class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl border border-yellow-200 p-4 transition-all duration-300 hover:shadow-lg">
+                                        <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                                            <div class="flex items-center gap-4 flex-1">
+                                                <img class="rounded-xl w-16 h-16 object-cover border border-yellow-200"
+                                                    src="{{ asset('storage/' . ($cart->medicine->photo ?? 'default.jpg')) }}"
+                                                    alt="{{ $cart->medicine->name ?? 'Product' }}" />
+                                                <div class="flex-1">
+                                                    <h2 class="text-lg font-semibold text-gray-900">
+                                                        {{ $cart->medicine->name ?? 'Product Deleted' }}</h2>
+                                                    <p class="text-sm text-gray-500">x{{ $cart->quantity }}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        @php
-                                            $discount = App\Models\Discount::where('medicine_id', $cart->medicine_id)
-                                                ->where('is_active', 1)
-                                                ->first();
-                                        @endphp
-                                        @if ($discount && $discount->is_active)
-                                            <div>
-                                                <div class="flex justify-between">
-                                                    <div class="flex gap-2">
-                                                        <h1 class="line-through">Rp.
+
+                                            @php
+                                                $discount = App\Models\Discount::where(
+                                                    'medicine_id',
+                                                    $cart->medicine_id,
+                                                )
+                                                    ->where('is_active', 1)
+                                                    ->first();
+                                            @endphp
+
+                                            @if ($discount && $discount->is_active)
+                                                <div class="text-right">
+                                                    <div class="flex flex-col items-end gap-1">
+                                                        <p class="text-sm text-gray-400 line-through">
+                                                            Rp.
                                                             {{ number_format($cart->medicine->price * $cart->quantity, 0, ',', '.') }}
-                                                        </h1>
-                                                        <h1>Rp.
+                                                        </p>
+                                                        <p class="text-lg font-semibold text-red-600">
+                                                            Rp.
                                                             {{ number_format($cart->medicine->price * $cart->quantity - $cart->medicine->price * $cart->quantity * ($discount->discount_amount / 100), 0, ',', '.') }}
-                                                        </h1>
+                                                        </p>
+                                                        <span
+                                                            class="text-xs bg-gradient-to-r from-red-600 to-pink-600 text-white px-2 py-1 rounded-full">
+                                                            Diskon {{ $discount->discount_amount }}%
+                                                        </span>
                                                     </div>
                                                 </div>
-                                                <div class="flex flex-col justify-center items-end">
-                                                    <h1 id="discount" data-discount="{{ $discount->discount_amount }}">
-                                                        Diskon {{ $discount->discount_amount }}%
-                                                    </h1>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <div class="flex justify-between">
-                                                <div class="flex gap-2">
-                                                    <h1>x{{ $cart->quantity }}</h1>
-                                                    <h1>Rp.
+                                            @else
+                                                <div class="text-right">
+                                                    <p class="text-lg font-semibold text-gray-800">
+                                                        Rp.
                                                         {{ number_format(($cart->medicine->price ?? 0) * $cart->quantity, 0, ',', '.') }}
-                                                    </h1>
+                                                    </p>
                                                 </div>
-                                            </div>
-                                        @endif
+                                            @endif
+                                        </div>
                                     </div>
+
                                     @php
                                         $totalPrice = ($cart->medicine->price ?? 0) * $cart->quantity;
                                         $discountAmount = 0;
@@ -84,25 +92,48 @@
                                     @endphp
                                 @else
                                     <!-- Handle case when medicine is deleted -->
-                                    <div class="rounded-xl bg-red-500 text-white p-2 flex items-center justify-between">
-                                        <div class="flex gap-3 items-center">
-                                            <div>
-                                                <h2 class="font-bold">Product Tidak Tersedia</h2>
-                                                <p class="text-sm">Item telah dihapus dari sistem</p>
+                                    <div
+                                        class="bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl border border-red-200 p-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-4">
+                                                <div
+                                                    class="w-16 h-16 bg-red-200 rounded-xl flex items-center justify-center">
+                                                    <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h2 class="text-lg font-semibold text-red-900">Product Tidak Tersedia
+                                                    </h2>
+                                                    <p class="text-sm text-red-600">Item telah dihapus dari sistem</p>
+                                                </div>
                                             </div>
+                                            <form action="{{ route('customer.carts.destroy', $cart->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="w-8 h-8 flex items-center justify-center bg-white border border-red-200 rounded-lg text-red-600 hover:bg-red-600 hover:text-white transition-all duration-300">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </form>
                                         </div>
-                                        <form action="{{ route('customer.carts.destroy', $cart->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-error btn-sm">Hapus</button>
-                                        </form>
                                     </div>
                                 @endif
                             @empty
-                                <div class="card card-side bg-neutral-100 shadow-lg outline-dashed w-full">
-                                    <div class="card-body">
-                                        <h2 class="card-title text-md">Belum ada barang</h2>
-                                    </div>
+                                <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-12 text-center">
+                                    <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Keranjang Kosong</h3>
+                                    <p class="text-gray-600 mb-6">Belum ada barang di keranjang belanja Anda</p>
                                 </div>
                             @endforelse
 
@@ -113,23 +144,41 @@
                                     <button class="btn btn-sm" onclick="my_modal_5.showModal()">Tambah Alamat +</button>
                                 </div>
                                 @foreach ($shippingAddresses as $shippingAddress)
-                                    <div class="form-control bg-success rounded-xl">
-                                        <label class="label cursor-pointer">
-                                            <div>
+                                    <div
+                                        class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-200 p-4 transition-all duration-300 hover:shadow-lg">
+                                        <label class="flex items-center justify-between cursor-pointer">
+                                            <div class="flex items-center gap-4 flex-1">
                                                 <input type="radio" name="shipping_address_id"
-                                                    value="{{ $shippingAddress->id }}" class="radio" />
-                                                <span class="label-text">{{ $shippingAddress->address }},
-                                                    {{ $shippingAddress->city }}, {{ $shippingAddress->province }},
-                                                    {{ $shippingAddress->postal_code }}</span>
+                                                    value="{{ $shippingAddress->id }}" class="radio radio-success" />
+                                                <div>
+                                                    <span
+                                                        class="text-gray-900 font-medium">{{ $shippingAddress->address }},
+                                                        {{ $shippingAddress->city }}, {{ $shippingAddress->province }},
+                                                        {{ $shippingAddress->postal_code }}</span>
+                                                </div>
                                             </div>
 
-                                            <div class="flex gap-1">
-                                                <button class="btn btn-sm"
+                                            <div class="flex gap-2">
+                                                <button type="button"
+                                                    class="w-8 h-8 flex items-center justify-center bg-white border border-blue-200 rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300"
                                                     onclick="editAddress('{{ $shippingAddress->id }}', '{{ $shippingAddress->address }}', '{{ $shippingAddress->city }}', '{{ $shippingAddress->province }}', '{{ $shippingAddress->postal_code }}')">
-                                                    Edit
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
                                                 </button>
-                                                <button class="btn btn-sm btn-error"
-                                                    onclick="showDeleteModal('{{ $shippingAddress->id }}')">Hapus</button>
+                                                <button type="button"
+                                                    class="w-8 h-8 flex items-center justify-center bg-white border border-red-200 rounded-lg text-red-600 hover:bg-red-600 hover:text-white transition-all duration-300"
+                                                    onclick="showDeleteModal('{{ $shippingAddress->id }}')">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
                                             </div>
                                         </label>
                                     </div>
@@ -247,18 +296,20 @@
                                     </div>
                                 </dialog>
 
-                                <label for="shipping_method_id">Metode Pengiriman</label>
-                                <select name="select_shipping_method_id" id="select_shipping_method_id"
-                                    class="form-select select select-bordered w-full bg-neutral-900">
-                                    <option value="" disabled selected>--Pilih Pengiriman--</option>
-                                    @foreach ($shippingMethods as $shippingMethod)
-                                        <option value="{{ $shippingMethod->id }}"
-                                            data-shipping-cost="{{ $shippingMethod->price }}">
-                                            {{ $shippingMethod->name }} |
-                                            Rp. {{ number_format($shippingMethod->price, 2, ',', '.') }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="space-y-4">
+                                    <label class="text-lg font-semibold text-gray-900">Metode Pengiriman</label>
+                                    <select name="select_shipping_method_id" id="select_shipping_method_id"
+                                        class="w-full bg-white border border-gray-300 rounded-2xl py-3 px-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300">
+                                        <option value="" disabled selected>--Pilih Pengiriman--</option>
+                                        @foreach ($shippingMethods as $shippingMethod)
+                                            <option value="{{ $shippingMethod->id }}"
+                                                data-shipping-cost="{{ $shippingMethod->price }}">
+                                                {{ $shippingMethod->name }} | Rp.
+                                                {{ number_format($shippingMethod->price, 2, ',', '.') }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
                                 <div class="border-t border-gray-700 my-4"></div>
 

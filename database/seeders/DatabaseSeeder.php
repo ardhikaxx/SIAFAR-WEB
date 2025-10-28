@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             UnitSeeder::class,
             CategorySeeder::class,
             MedicineSeeder::class,
-            // Tambahkan seeder lain jika ada
+            ShippingMethodSeeder::class,
         ]);
     }
 }

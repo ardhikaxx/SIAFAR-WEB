@@ -82,11 +82,11 @@
                                         @csrf
                                         @method('DELETE')
                                         @php
-    // Ganti dengan query langsung
-    $discount = App\Models\Discount::where('medicine_id', $cart->medicine_id)
-        ->where('is_active', 1)
-        ->first();
-@endphp
+                                            // Ganti dengan query langsung
+                                            $discount = App\Models\Discount::where('medicine_id', $cart->medicine_id)
+                                                ->where('is_active', 1)
+                                                ->first();
+                                        @endphp
 
                                         <div class="text-right">
                                             @if ($discount && $discount->medicine_id == $cart->medicine_id)
