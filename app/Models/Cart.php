@@ -11,20 +11,35 @@ class Cart extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'user_id',
         'medicine_id',
         'quantity',
     ];
 
-
     public function medicine(): BelongsTo
     {
         return $this->belongsTo(Medicine::class);
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Tambahkan accessor untuk menghindari error
+    public function getMedicineNameAttribute()
+    {
+        return $this->medicine ? $this->medicine->name : 'Product Deleted';
+    }
+
+    public function getMedicinePriceAttribute()
+    {
+        return $this->medicine ? $this->medicine->price : 0;
+    }
+
+    public function getMedicinePhotoAttribute()
+    {
+        return $this->medicine ? $this->medicine->photo : 'default.jpg';
     }
 }

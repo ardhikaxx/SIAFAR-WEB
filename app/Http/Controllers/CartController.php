@@ -122,6 +122,12 @@ class CartController extends Controller
         $carts = Cart::with('medicine')
             ->where('user_id', Auth::id())
             ->get();
+
+        // Cek jika keranjang kosong
+        if ($carts->isEmpty()) {
+            return redirect()->route('customer.carts.index')->with('error', 'Keranjang belanja kosong.');
+        }
+
         $medicines = Medicine::all();
 
         $totalAmount = $carts->sum(function ($cart) {
@@ -129,27 +135,41 @@ class CartController extends Controller
         });
 
         $grandTotalAmount = $carts->sum(function ($cart) {
-            return $cart->grand_total * $cart->quantity;
+            $discount = Discount::where('medicine_id', $cart->medicine_id)
+                ->where('is_active', 1)
+                ->where('start_date', '<=', now())
+                ->where('end_date', '>=', now())
+                ->first();
+
+            if ($discount) {
+                $discountAmount = $cart->medicine->price * ($discount->discount_amount / 100);
+                return ($cart->medicine->price - $discountAmount) * $cart->quantity;
+            }
+
+            return $cart->medicine->price * $cart->quantity;
         });
 
-
         $payments = Payment::all();
+        $shippingAddresses = ShippingAddress::with('user')
+            ->where('user_id', Auth::id())
+            ->orderBy("id", "desc")
+            ->get();
 
-        // $promoCode = PromoCode::where('promo_code', $request->promo_code)
-        //     ->where('is_active', 1)
-        //     ->where('start_date', '<=', now())
-        //     ->where('end_date', '>=', now())
-        //     ->first();
-
-
-        $shippingAddresses = ShippingAddress::with('user')->where('user_id', Auth::id())->orderBy("id", "desc")->get();
         $shippingMethods = ShippingMethod::orderBy("id", "desc")->get();
 
-        $shippingAddress = ShippingAddress::where('user_id', Auth::id())->first();
+        // Hapus baris ini karena tidak diperlukan di view
+        // $shippingAddress = ShippingAddress::where('user_id', Auth::id())->first();
 
-
-        return view("customer.checkout.index", compact('carts', 'medicines', 'totalAmount', 'grandTotalAmount', 'payments', 'shippingAddresses', 'shippingMethods', 'shippingAddress'));
-
+        return view("customer.checkout.index", compact(
+            'carts',
+            'medicines',
+            'totalAmount',
+            'grandTotalAmount',
+            'payments',
+            'shippingAddresses',
+            'shippingMethods'
+            // Hapus 'shippingAddress' dari compact
+        ));
     }
 
 

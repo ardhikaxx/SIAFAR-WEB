@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Medicine extends Model
@@ -21,8 +22,6 @@ class Medicine extends Model
         'category_id',
         'unit_id'
     ];
-
-
 
     public function transaction_detail(): HasMany
     {
@@ -44,7 +43,7 @@ class Medicine extends Model
         return $this->belongsTo(Unit::class);
     }
 
-    public function discount()
+    public function discount(): HasOne
     {
         return $this->hasOne(Discount::class);
     }
